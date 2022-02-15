@@ -2,14 +2,41 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
+  const octokit = new github.GitHub(process.env.GITHUB_TOKEN)
+  const context = github.context
+
   const environment = core.getInput('environment');
   console.log(`Getting ${environment}!`);
 
+  let page = 1
+  
+  const deployments = await octokit.request('GET /repos/{owner}/{repo}/deployments?environment={environment}&page={page}', {
+    owner: context.owner.name,
+    repo: context.repo.name,
+    environment: environment,
+    page: page
+  }).map(deployment => {
+    let status = await octokit.request('GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses?per_page=100', {
+      owner: context.owner.name,
+      repo: context.repo.name,
+      deployment_id: deployment.id
+    });
+    return status.state == 'success' ? {
+      'id': status.id,
+      'status': status.state,
+      'ref': deployment.ref
+    } : {}
+  }, []).filter(status => Object.keys(status).length > 0)
+
+  console.log(deployments)
+
+  
+  // const deployments = await octokit.re
 
   const time = (new Date()).toTimeString();
-  core.setOutput("time", environment);
+  core.setOutput("time", time);
 
-  core.setOutput("ref", time);
+  core.setOutput("ref", deployments);
   
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
