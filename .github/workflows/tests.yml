@@ -1,5 +1,6 @@
 name: "units-test"
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -20,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - run: npm ci
     - uses: ./
       with:
         environment: dev
