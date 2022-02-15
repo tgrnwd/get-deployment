@@ -1,0 +1,48 @@
+name: "units-test"
+on:
+  workflow_dispatch:
+
+jobs:
+  # units:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - run: npm ci
+  #   - run: npm test
+
+  # test action works running from the graph
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+
+
+      - name: Set Release Version from the github commit
+        id: release_version_step
+        run: |
+          echo "RELEASE_VERSION=$(date -u '+%Y.%m.%d.%H%M%S')" >> $GITHUB_ENV
+          echo "::set-output name=release_version::${{ env.RELEASE_VERSION }}"
+      - name: Tag Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          release_name: ${{ env.RELEASE_VERSION }}
+          draft: false
+          prerelease: false
+
+  dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Deploy
+        run: |
+          echo "Deploying to Dev"
