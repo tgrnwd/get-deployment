@@ -7,7 +7,8 @@ try {
 
 
   const time = (new Date()).toTimeString();
-  core.setOutput("time", ${environment});
+  core.setOutput("time", environment);
+
   core.setOutput("ref", time);
   
   // Get the JSON webhook payload for the event that triggered the workflow
