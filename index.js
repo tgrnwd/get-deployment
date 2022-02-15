@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-try {
+async function getDeployments() {
   const octokit = new github.GitHub(process.env.GITHUB_TOKEN)
   const context = github.context
 
@@ -9,6 +9,7 @@ try {
   console.log(`Getting ${environment}!`);
 
   let page = 1
+  
   
   const deployments = await octokit.request('GET /repos/{owner}/{repo}/deployments?environment={environment}&page={page}', {
     owner: context.owner.name,
@@ -28,10 +29,13 @@ try {
     } : {}
   }, []).filter(status => Object.keys(status).length > 0)
 
-  console.log(deployments)
+  return deployments
+}
 
-  
-  // const deployments = await octokit.re
+try {
+
+  let deployments = getDeployments()
+  console.log(deployments)
 
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
@@ -44,3 +48,4 @@ try {
 } catch (error) {
   core.setFailed(error.message);
 }
+
