@@ -82,8 +82,8 @@ async function getDeployments() {
 
   async function mapDeploymentDetails(deployments) {
     
-    return deployments.map(deployment => {
-      return octokit.rest.repos.listDeploymentStatuses({
+    return await deployments.map(deployment => {
+      return await octokit.rest.repos.listDeploymentStatuses({
         ...context.repo,
         deployment_id: deployment.id
       }).then(data => {
@@ -107,7 +107,7 @@ async function getDeployments() {
   //   status_id,
   // });
 
-  console.log( await deployments )
+  // console.log( await deployments )
 
   let d = await deployments
 
