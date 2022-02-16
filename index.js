@@ -97,14 +97,24 @@ async function getDeployments() {
 
   let x = d.map( deployment => {
 
-    return {
-      "id": deployment.id,
-      "sha": deployment.sha,
-      "ref": deployment.ref,
-      "states": await new Promise((resolve) => {
-        deploymentDetails(deployment)
-      })
-    }
+    return await new Promise((resolve) => {
+
+      return {
+        "id": deployment.id,
+        "sha": deployment.sha,
+        "ref": deployment.ref,
+        "states": resolve(deploymentDetails(deployment))
+      }
+    })
+
+    // return {
+    //   "id": deployment.id,
+    //   "sha": deployment.sha,
+    //   "ref": deployment.ref,
+    //   "states": await new Promise((resolve) => {
+    //     resolve(deploymentDetails(deployment))
+    //   })
+    // }
 
   })
 
