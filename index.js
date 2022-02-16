@@ -52,7 +52,7 @@ async function getDeployments() {
     ...context.repo,
     environment: environment,
     page: page
-  }).then( (response) => {
+  }).then( response => {
     return response.data
   })
 
