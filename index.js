@@ -11,31 +11,35 @@ console.log(`Getting ${environment}!`);
 let page = 1
 
 async function getDeploymentsX() {
-  octokit.rest.repos.listDeployments({
+  return await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
-  }).then( response => {
-    return response.data
   })
+  // .then( response => {
+  //   return response.data
+  // })
 }
 
-try {
+(async () => {
+  try {
 
-  // let deployments = getDeploymentsX()
-  console.log( getDeploymentsX() )
-
-  // const time = (new Date()).toTimeString();
-  // core.setOutput("time", time);
-  // core.setOutput("ref", deployments);
+    // let deployments = getDeploymentsX()
+    console.log(await getDeploymentsX())
   
-  // Get the JSON webhook payload for the event that triggered the workflow
+    // const time = (new Date()).toTimeString();
+    // core.setOutput("time", time);
+    // core.setOutput("ref", deployments);
+    
+    // Get the JSON webhook payload for the event that triggered the workflow
+  
+    // const payload = JSON.stringify(github.context.payload, undefined, 2)
+    // console.log(`The event payload: ${payload}`);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+})()
 
-  // const payload = JSON.stringify(github.context.payload, undefined, 2)
-  // console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
-}
 
 
 
