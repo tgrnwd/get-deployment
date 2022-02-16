@@ -80,6 +80,22 @@ async function getDeployments() {
     })
   }
 
+  function mapDeploymentDetails(deployments) {
+    
+    return deployments.map(deployment => {
+      return octokit.rest.repos.listDeploymentStatuses({
+        ...context.repo,
+        deployment_id: deployment.id
+      }).then(data => {
+    
+        let statuses = data.data
+        return statuses.map( status => {
+          return status.state
+        })
+      })
+    })
+  }
+
   // const deploymentDetails = ( deployment ) => await octokit.rest.repos.listDeploymentStatuses({
   //   ...context.repo,
   //   deployment_id: deployment.id
@@ -95,28 +111,30 @@ async function getDeployments() {
 
   let d = await deployments
 
-  let x = d.map( deployment => {
+  let x = await mapDeploymentDetails(d)
 
-    return new Promise((resolve) => {
+  // let x = d.map( deployment => {
 
-      return {
-        "id": deployment.id,
-        "sha": deployment.sha,
-        "ref": deployment.ref,
-        "states": resolve(deploymentDetails(deployment))
-      }
-    })
+  //   // return new Promise((resolve) => {
 
-    // return {
-    //   "id": deployment.id,
-    //   "sha": deployment.sha,
-    //   "ref": deployment.ref,
-    //   "states": await new Promise((resolve) => {
-    //     resolve(deploymentDetails(deployment))
-    //   })
-    // }
+  //   //   return {
+  //   //     "id": deployment.id,
+  //   //     "sha": deployment.sha,
+  //   //     "ref": deployment.ref,
+  //   //     "states": resolve(deploymentDetails(deployment))
+  //   //   }
+  //   // })
 
-  })
+  //   // return {
+  //   //   "id": deployment.id,
+  //   //   "sha": deployment.sha,
+  //   //   "ref": deployment.ref,
+  //   //   "states": await new Promise((resolve) => {
+  //   //     resolve(deploymentDetails(deployment))
+  //   //   })
+  //   // }
+
+  // })
 
   console.log( await x )
 
