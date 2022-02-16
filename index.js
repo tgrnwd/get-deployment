@@ -8,6 +8,8 @@ const context = github.context
 const environment = core.getInput('environment');
 console.log(`Getting ${environment}!`);
 
+let page = 1
+
 async function getDeploymentsX() {
   return octokit.rest.repos.listDeployments({
     ...context.repo,
