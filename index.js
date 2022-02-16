@@ -91,7 +91,7 @@ async function getDeployments() {
       "id": deployment.id,
       "sha": deployment.sha,
       "ref": deployment.ref,
-      "states": deploymentDetails
+      "states": await deploymentDetails
     }
 
   })
