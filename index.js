@@ -54,16 +54,16 @@ async function getDeployments() {
     page: page
   }).then( response => response.data )
 
-  const deploymentDetails = await octokit.rest.repos.getDeployment({
+  const deploymentDetails = ( deployment ) => await octokit.rest.repos.getDeployment({
     ...context.repo,
     deployment_id: deployment.id
   })
 
-  const deploymentstatus = await octokit.rest.repos.getDeploymentStatus({
-    ...context.repo,
-    deployment_id,
-    status_id,
-  });
+  // const deploymentstatus = ( deployment ) => await octokit.rest.repos.getDeploymentStatus({
+  //   ...context.repo,
+  //   deployment_id,
+  //   status_id,
+  // });
 
   deployments.then( console.log( returnedData ) )
 
