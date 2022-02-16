@@ -15,8 +15,8 @@ async function getDeployments() {
     ...context.repo,
     environment: environment,
     page: page
-  }).then((deployments) => {
-
+  }).then((data) => {
+    let deployments = data.data
     console.log(deployments)
     // deployments.map(async deployment => {
     //   let deploymentStatus = await octokit.rest.repos.getDeployment({
@@ -54,7 +54,7 @@ async function getDeployments() {
 try {
 
   let deployments = getDeployments()
-  console.log(deployments)
+  // console.log(deployments)
 
   const time = (new Date()).toTimeString();
   core.setOutput("time", time);
