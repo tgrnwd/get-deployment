@@ -26,6 +26,8 @@ async function getDeployments() {
         deployment_id: deployment.id
       }).then( (deploymentStatus) => {
 
+        console.log(deploymentStatus)
+        
         return deploymentStatus.state == 'success' ? {
           'id': deploymentStatus.id,
           'status': deploymentStatus.state,
