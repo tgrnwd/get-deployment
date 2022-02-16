@@ -13,14 +13,14 @@ async function getDeployments() {
   
   
   const deployments = await octokit.request('GET /repos/{owner}/{repo}/deployments?environment={environment}&page={page}', {
-    owner: context.owner.name,
-    repo: context.repo.name,
+    owner: context.owner,
+    repo: context.repo,
     environment: environment,
     page: page
   }).map(async deployment => {
     let status = await octokit.request('GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses?per_page=100', {
-      owner: context.owner.name,
-      repo: context.repo.name,
+      owner: context.owner,
+      repo: context.repo,
       deployment_id: deployment.id
     });
     return status.state == 'success' ? {
