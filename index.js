@@ -11,18 +11,26 @@ async function getDeployments() {
 
   let page = 1
   
-  return await octokit.rest.repos.listDeployments({
+  const deployments = await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
-  }).then((data) => {
-    console.log(data)
+  }).then((deployments) => {
+
+    deployments.map(async deployment => {
+      let deploymentStatus = await octokit.rest.repos.getDeployment({
+        ...context.repo,
+        deployment_id: deployment.id
+      }).then( (deploymentStatus) => {
+        return deploymentStatus.state == 'success' ? {
+          'id': deploymentStatus.id,
+          'status': deploymentStatus.state,
+          'ref': deployment.ref
+        } : {}
+      })
+    }, [])
+    
   })
-  // const deployments = await octokit.rest.repos.listDeployments({
-  //   ...context.repo,
-  //   environment: environment,
-  //   page: page
-  // })
 
   // return deployments.map(async deployment => {
     
@@ -39,7 +47,7 @@ async function getDeployments() {
     
   // }, []).filter(status => Object.keys(status).length > 0)
 
-  return deployments
+  // return deployments
 }
 
 try {
@@ -54,7 +62,7 @@ try {
   
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
-  // console.log(`The event payload: ${payload}`);
+  console.log(`The event payload: ${payload}`);
 } catch (error) {
   core.setFailed(error.message);
 }
