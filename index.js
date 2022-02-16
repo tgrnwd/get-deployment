@@ -56,6 +56,8 @@ async function deploymentDetailsX(deployment) {
         'state': statuses
       }
     })
+
+    console.log(statuses)
   
     // const time = (new Date()).toTimeString();
     // core.setOutput("time", time);
