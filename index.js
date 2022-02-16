@@ -56,7 +56,7 @@ async function getDeployments() {
     return response.data
   })
 
-  // const deploymentDetails = ( deployment ) => await octokit.rest.repos.getDeployment({
+  // const deploymentDetails = ( deployment ) => await octokit.rest.repos.listDeploymentStatuses({
   //   ...context.repo,
   //   deployment_id: deployment.id
   // })
@@ -68,6 +68,23 @@ async function getDeployments() {
   // });
 
   console.log( await deployments )
+
+  function reduce() {
+    let deployments = await deployments
+
+    deployments.map( deployment => {
+      
+      const deploymentDetails = await octokit.rest.repos.listDeploymentStatuses({
+        ...context.repo,
+        deployment_id: deployment.id
+      }).then(data => {
+        console.log( data )
+      })
+
+    })
+  }
+
+  reduce()
 
   // deployments.then( deploymentDetails( data ).then( deploymentstatus( data ) ) )
 
