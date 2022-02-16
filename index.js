@@ -15,10 +15,9 @@ async function getDeploymentsX() {
     ...context.repo,
     environment: environment,
     page: page
+  }).then( response => {
+    return response.data
   })
-  // .then( response => {
-  //   return response.data
-  // })
 }
 
 (async () => {
