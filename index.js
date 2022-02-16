@@ -52,7 +52,9 @@ async function getDeployments() {
     ...context.repo,
     environment: environment,
     page: page
-  }).then( response => response.data )
+  }).then( (response) => {
+    return response.data
+  })
 
   // const deploymentDetails = ( deployment ) => await octokit.rest.repos.getDeployment({
   //   ...context.repo,
