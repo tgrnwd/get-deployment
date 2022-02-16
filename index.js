@@ -67,7 +67,7 @@ async function getDeployments() {
   //   status_id,
   // });
 
-  deployments.then( console.log( returnedData ) )
+  deployments.then( console.log )
 
   // deployments.then( deploymentDetails( data ).then( deploymentstatus( data ) ) )
 
