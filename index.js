@@ -80,7 +80,7 @@ async function getDeployments() {
     })
   }
 
-  function mapDeploymentDetails(deployments) {
+  async function mapDeploymentDetails(deployments) {
     
     return deployments.map(deployment => {
       return octokit.rest.repos.listDeploymentStatuses({
