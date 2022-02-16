@@ -11,11 +11,18 @@ async function getDeployments() {
 
   let page = 1
   
-  const deployments = await octokit.rest.repos.listDeployments({
+  return await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
+  }).then((data) => {
+    console.log(data)
   })
+  // const deployments = await octokit.rest.repos.listDeployments({
+  //   ...context.repo,
+  //   environment: environment,
+  //   page: page
+  // })
 
   // return deployments.map(async deployment => {
     
