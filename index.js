@@ -1,6 +1,42 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
+const token = core.getInput('token');
+const octokit = new github.getOctokit(token)
+const context = github.context
+
+const environment = core.getInput('environment');
+console.log(`Getting ${environment}!`);
+
+async function getDeploymentsX() {
+  return await octokit.rest.repos.listDeployments({
+    ...context.repo,
+    environment: environment,
+    page: page
+  }).then( response => {
+    return response.data
+  })
+}
+
+try {
+
+  let deployments = await getDeploymentsX()
+  console.log(deployments)
+
+  // const time = (new Date()).toTimeString();
+  // core.setOutput("time", time);
+  // core.setOutput("ref", deployments);
+  
+  // Get the JSON webhook payload for the event that triggered the workflow
+
+  // const payload = JSON.stringify(github.context.payload, undefined, 2)
+  // console.log(`The event payload: ${payload}`);
+} catch (error) {
+  core.setFailed(error.message);
+}
+
+
+
 async function getDeployments() {
   const token = core.getInput('token');
   const octokit = new github.getOctokit(token)
@@ -55,16 +91,17 @@ async function getDeployments() {
   }).then( response => {
     return response.data
   }).then(deployments => deployments.map(deployment => {
-    return await octokit.rest.repos.listDeploymentStatuses({
+    let deploymentStuff = await octokit.rest.repos.listDeploymentStatuses({
       ...context.repo,
       deployment_id: deployment.id
     }).then(data => {
-  
       let statuses = data.data
       return statuses.map( status => {
         return status.state
       })
     })
+
+    return 
   }))
 
   // const deploymentDetails = (deployment) => await octokit.rest.repos.listDeploymentStatuses({
@@ -176,20 +213,20 @@ async function getDeployments() {
   // return deployments
 }
 
-try {
+// try {
 
-  let deployments = getDeployments()
-  // console.log(deployments)
+//   let deployments = getDeployments()
+//   // console.log(deployments)
 
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
+//   const time = (new Date()).toTimeString();
+//   core.setOutput("time", time);
 
-  core.setOutput("ref", deployments);
+//   core.setOutput("ref", deployments);
   
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  // console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
-}
+//   // Get the JSON webhook payload for the event that triggered the workflow
+//   const payload = JSON.stringify(github.context.payload, undefined, 2)
+//   // console.log(`The event payload: ${payload}`);
+// } catch (error) {
+//   core.setFailed(error.message);
+// }
 
