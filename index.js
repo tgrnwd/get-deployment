@@ -56,7 +56,7 @@ async function getDeployments() {
     return response.data
   })
 
-  const deploymentDetails = await octokit.rest.repos.listDeploymentStatuses({
+  const deploymentDetails = (deployment) => await octokit.rest.repos.listDeploymentStatuses({
     ...context.repo,
     deployment_id: deployment.id
   }).then(data => {
@@ -88,7 +88,7 @@ async function getDeployments() {
       "id": deployment.id,
       "sha": deployment.sha,
       "ref": deployment.ref,
-      "states": await deploymentDetails
+      "states": deploymentDetails(deployment)
     }
 
   })
