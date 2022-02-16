@@ -17,18 +17,19 @@ async function getDeployments() {
     page: page
   }).then((deployments) => {
 
-    deployments.map(async deployment => {
-      let deploymentStatus = await octokit.rest.repos.getDeployment({
-        ...context.repo,
-        deployment_id: deployment.id
-      }).then( (deploymentStatus) => {
-        return deploymentStatus.state == 'success' ? {
-          'id': deploymentStatus.id,
-          'status': deploymentStatus.state,
-          'ref': deployment.ref
-        } : {}
-      })
-    }, [])
+    console.log(deployments)
+    // deployments.map(async deployment => {
+    //   let deploymentStatus = await octokit.rest.repos.getDeployment({
+    //     ...context.repo,
+    //     deployment_id: deployment.id
+    //   }).then( (deploymentStatus) => {
+    //     return deploymentStatus.state == 'success' ? {
+    //       'id': deploymentStatus.id,
+    //       'status': deploymentStatus.state,
+    //       'ref': deployment.ref
+    //     } : {}
+    //   })
+    // }, [])
     
   })
 
