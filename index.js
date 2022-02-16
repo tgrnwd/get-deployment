@@ -67,7 +67,7 @@ async function getDeployments() {
   //   })
   // })
 
-  function deploymentDetails(deployment) {
+  async function deploymentDetails(deployment) {
     return octokit.rest.repos.listDeploymentStatuses({
       ...context.repo,
       deployment_id: deployment.id
