@@ -11,7 +11,7 @@ console.log(`Getting ${environment}!`);
 let page = 1
 
 async function getDeploymentsX() {
-  return await octokit.rest.repos.listDeployments({
+  octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
