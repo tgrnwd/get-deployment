@@ -112,6 +112,7 @@ async function getDeployments() {
   let d = await deployments
 
   let x = await mapDeploymentDetails(d)
+  console.log( await x )
 
   // let x = d.map( deployment => {
 
@@ -136,7 +137,7 @@ async function getDeployments() {
 
   // })
 
-  console.log( await x )
+  // console.log( await x )
 
   // deployments.then( deploymentDetails( data ).then( deploymentstatus( data ) ) )
 
