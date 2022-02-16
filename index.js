@@ -18,18 +18,18 @@ async function getDeployments() {
   }).then((data) => {
     let deployments = data.data
     console.log(deployments)
-    // deployments.map(async deployment => {
-    //   let deploymentStatus = await octokit.rest.repos.getDeployment({
-    //     ...context.repo,
-    //     deployment_id: deployment.id
-    //   }).then( (deploymentStatus) => {
-    //     return deploymentStatus.state == 'success' ? {
-    //       'id': deploymentStatus.id,
-    //       'status': deploymentStatus.state,
-    //       'ref': deployment.ref
-    //     } : {}
-    //   })
-    // }, [])
+    deployments.map(async deployment => {
+      let deploymentStatus = await octokit.rest.repos.getDeployment({
+        ...context.repo,
+        deployment_id: deployment.id
+      }).then( (deploymentStatus) => {
+        return deploymentStatus.state == 'success' ? {
+          'id': deploymentStatus.id,
+          'status': deploymentStatus.state,
+          'ref': deployment.ref
+        } : {}
+      })
+    }, [])
     
   })
 
