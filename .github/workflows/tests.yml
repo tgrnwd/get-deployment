@@ -25,7 +25,9 @@ jobs:
     - uses: ./
       with:
         environment: dev
+        token: ${{ secrets.GITHUB_TOKEN  }}
 
     - uses: ./
       with:
         environment: prod
+        token: ${{ secrets.GITHUB_TOKEN  }}

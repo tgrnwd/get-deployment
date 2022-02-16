@@ -2,7 +2,8 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 async function getDeployments() {
-  const octokit = new github.GitHub(process.env.GITHUB_TOKEN)
+  const token = core.getInput('token');
+  const octokit = new github.getOctokit(token)
   const context = github.context
 
   const environment = core.getInput('environment');
