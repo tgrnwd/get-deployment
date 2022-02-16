@@ -17,22 +17,22 @@ async function getDeployments() {
     page: page
   })
 
-  return deployments.map(async deployment => {
+  // return deployments.map(async deployment => {
     
-    let status = await octokit.rest.repos.getDeployment({
-      ...context.repo,
-      deployment_id: deployment.id
-    });
+  //   let status = await octokit.rest.repos.getDeployment({
+  //     ...context.repo,
+  //     deployment_id: deployment.id
+  //   });
 
-    return status.state == 'success' ? {
-      'id': status.id,
-      'status': status.state,
-      'ref': deployment.ref
-    } : {}
+  //   return status.state == 'success' ? {
+  //     'id': status.id,
+  //     'status': status.state,
+  //     'ref': deployment.ref
+  //   } : {}
     
-  }, []).filter(status => Object.keys(status).length > 0)
+  // }, []).filter(status => Object.keys(status).length > 0)
 
-  // return deployments
+  return deployments
 }
 
 try {
