@@ -11,7 +11,7 @@ console.log(`Getting ${environment}!`);
 let page = 1
 
 async function getDeploymentsX() {
-  return octokit.rest.repos.listDeployments({
+  return await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
@@ -23,7 +23,7 @@ async function getDeploymentsX() {
 try {
 
   // let deployments = getDeploymentsX()
-  console.log( await getDeploymentsX() )
+  console.log( getDeploymentsX() )
 
   // const time = (new Date()).toTimeString();
   // core.setOutput("time", time);
