@@ -20,11 +20,42 @@ async function getDeploymentsX() {
   })
 }
 
+async function deploymentDetailsX(deployment) {
+  return await octokit.rest.repos.listDeploymentStatuses({
+    ...context.repo,
+    deployment_id: deployment.id
+  }).then( response => {
+    let statuses = response.data
+    return statuses.map(status => status.state)
+  })
+}
+
+  // const deploymentDetails = (deployment) => await octokit.rest.repos.listDeploymentStatuses({
+  //   ...context.repo,
+  //   deployment_id: deployment.id
+  // }).then(data => {
+
+  //   let statuses = data.data
+  //   return statuses.map( status => {
+  //     return status.state
+  //   })
+  // })
+
 (async () => {
   try {
 
-    // let deployments = getDeploymentsX()
-    console.log(await getDeploymentsX())
+    let deployments = await getDeploymentsX()
+    // console.log(await getDeploymentsX())
+
+    let status = await deployments.map(deployment => {
+      let statuses= await deploymentDetailsX(deployment)
+      return {
+        'id': deploymentStatus.id,
+        'status': deploymentStatus.state,
+        'ref': deployment.ref,
+        'state': statuses
+      }
+    })
   
     // const time = (new Date()).toTimeString();
     // core.setOutput("time", time);
