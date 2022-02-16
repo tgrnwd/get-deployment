@@ -17,7 +17,8 @@ async function getDeployments() {
     repo: context.repo,
     environment: environment,
     page: page
-  }).map(async deployment => {
+  })
+  return deployments.map(async deployment => {
     let status = await octokit.request('GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses?per_page=100', {
       owner: context.owner,
       repo: context.repo,
@@ -30,7 +31,7 @@ async function getDeployments() {
     } : {}
   }, []).filter(status => Object.keys(status).length > 0)
 
-  return deployments
+  // return deployments
 }
 
 try {
