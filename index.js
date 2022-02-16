@@ -12,8 +12,7 @@ async function getDeployments() {
   let page = 1
   
   const deployments = await octokit.rest.repos.listDeployments({
-    owner: context.owner,
-    repo: context.repo,
+    ...context.repo,
     environment: environment,
     page: page
   })
@@ -21,8 +20,7 @@ async function getDeployments() {
   return deployments.map(async deployment => {
     
     let status = await octokit.rest.repos.getDeployment({
-      owner: context.owner,
-      repo: context.repo,
+      ...context.repo,
       deployment_id: deployment.id
     });
 
