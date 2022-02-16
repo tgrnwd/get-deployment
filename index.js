@@ -23,7 +23,7 @@ async function getDeploymentsX() {
 try {
 
   // let deployments = getDeploymentsX()
-  console.log( getDeploymentsX() )
+  console.log( await getDeploymentsX() )
 
   // const time = (new Date()).toTimeString();
   // core.setOutput("time", time);
