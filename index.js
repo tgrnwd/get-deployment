@@ -55,7 +55,7 @@ async function getDeployments() {
   }).then( response => {
     return response.data
   }).then(deployments => deployments.map(deployment => {
-    return octokit.rest.repos.listDeploymentStatuses({
+    return await octokit.rest.repos.listDeploymentStatuses({
       ...context.repo,
       deployment_id: deployment.id
     }).then(data => {
