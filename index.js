@@ -9,7 +9,7 @@ const environment = core.getInput('environment');
 console.log(`Getting ${environment}!`);
 
 async function getDeploymentsX() {
-  return await octokit.rest.repos.listDeployments({
+  return octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
