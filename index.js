@@ -11,24 +11,27 @@ async function getDeployments() {
 
   let page = 1
   
-  
-  const deployments = await octokit.request('GET /repos/{owner}/{repo}/deployments?environment={environment}&page={page}', {
+  const deployments = await octokit.rest.repos.listDeployments({
     owner: context.owner,
     repo: context.repo,
     environment: environment,
     page: page
   })
+
   return deployments.map(async deployment => {
-    let status = await octokit.request('GET /repos/{owner}/{repo}/deployments/{deployment_id}/statuses?per_page=100', {
+    
+    let status = await octokit.rest.repos.getDeployment({
       owner: context.owner,
       repo: context.repo,
       deployment_id: deployment.id
     });
+
     return status.state == 'success' ? {
       'id': status.id,
       'status': status.state,
       'ref': deployment.ref
     } : {}
+    
   }, []).filter(status => Object.keys(status).length > 0)
 
   // return deployments
