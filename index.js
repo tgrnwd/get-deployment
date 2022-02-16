@@ -101,7 +101,9 @@ async function getDeployments() {
       "id": deployment.id,
       "sha": deployment.sha,
       "ref": deployment.ref,
-      "states": await deploymentDetails(deployment)
+      "states": await new Promise((resolve) => {
+        deploymentDetails(deployment)
+      })
     }
 
   })
