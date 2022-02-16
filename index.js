@@ -71,7 +71,7 @@ async function getDeployments() {
 
   let d = await deployments
 
-  d.map( deployment => {
+  let x = d.map( deployment => {
     
     let states = []
 
@@ -79,10 +79,12 @@ async function getDeployments() {
       ...context.repo,
       deployment_id: deployment.id
     }).then(data => {
+
       let statuses = data.data
       statuses.map( status => {
         return status.state
       })
+
     }, states)
 
     return {
@@ -93,6 +95,8 @@ async function getDeployments() {
     }
 
   })
+
+  console.log( await x )
 
   // deployments.then( deploymentDetails( data ).then( deploymentstatus( data ) ) )
 
