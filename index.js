@@ -11,33 +11,69 @@ async function getDeployments() {
 
   let page = 1
   
+  // const deployments = await octokit.rest.repos.listDeployments({
+  //   ...context.repo,
+  //   environment: environment,
+  //   page: page
+  // }).then((data) => {
+  //   let deployments = data.data
+
+  //   // console.log(deployments)
+    
+  //   deployments.map(async deployment => {
+  //     let deploymentStatus = await octokit.rest.repos.getDeployment({
+  //       ...context.repo,
+  //       deployment_id: deployment.id
+  //     }).then( (deploymentStatus) => {
+
+  //       console.log(deploymentStatus)
+
+  //       octokit.rest.repos.getDeploymentStatus({
+  //         owner,
+  //         repo,
+  //         deployment_id,
+  //         status_id,
+  //       });
+        
+  //       return deploymentStatus.state == 'success' ? {
+  //         'id': deploymentStatus.id,
+  //         'status': deploymentStatus.state,
+  //         'ref': deployment.ref
+  //       } : {}
+  //     })
+
+  //   }, [])
+    
+  // })
+
+  // deployments.then(data => console.log(data))
+
   const deployments = await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
     page: page
-  }).then((data) => {
-    let deployments = data.data
+  }).then( response => response.data )
 
-    // console.log(deployments)
-    
-    deployments.map(async deployment => {
-      let deploymentStatus = await octokit.rest.repos.getDeployment({
-        ...context.repo,
-        deployment_id: deployment.id
-      }).then( (deploymentStatus) => {
+  const deploymentDetails = await octokit.rest.repos.getDeployment({
+    ...context.repo,
+    deployment_id: deployment.id
+  })
 
-        console.log(deploymentStatus)
-        
-        return deploymentStatus.state == 'success' ? {
-          'id': deploymentStatus.id,
-          'status': deploymentStatus.state,
-          'ref': deployment.ref
-        } : {}
-      })
+  const deploymentstatus = await octokit.rest.repos.getDeploymentStatus({
+    ...context.repo,
+    deployment_id,
+    status_id,
+  });
 
-    }, [])
-    
-  }).then((data) => console.log(data))
+  deployments.then( console.log( returnedData ) )
+
+  // deployments.then( deploymentDetails( data ).then( deploymentstatus( data ) ) )
+
+  // deployments.then( data.data.map())
+
+
+
+
 
   // return deployments.map(async deployment => {
     
