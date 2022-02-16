@@ -67,7 +67,7 @@ async function getDeployments() {
   //   })
   // })
 
-  async function deploymentDetails(deployment) {
+  function deploymentDetails(deployment) {
     return octokit.rest.repos.listDeploymentStatuses({
       ...context.repo,
       deployment_id: deployment.id
@@ -97,7 +97,7 @@ async function getDeployments() {
 
   let x = d.map( deployment => {
 
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
 
       return {
         "id": deployment.id,
