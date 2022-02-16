@@ -33,7 +33,7 @@ async function getDeployments() {
         } : {}
       })
 
-    }, []).then( stuff => {
+    }, []).then( (stuff) => {
       console.log(stuff)
     } )
     
