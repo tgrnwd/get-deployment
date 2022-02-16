@@ -33,11 +33,9 @@ async function getDeployments() {
         } : {}
       })
 
-    }, []).then( (stuff) => {
-      console.log(stuff)
-    } )
+    }, [])
     
-  })
+  }).then((data) => console.log(data))
 
   // return deployments.map(async deployment => {
     
