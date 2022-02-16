@@ -56,16 +56,29 @@ async function getDeployments() {
     return response.data
   })
 
-  const deploymentDetails = (deployment) => await octokit.rest.repos.listDeploymentStatuses({
-    ...context.repo,
-    deployment_id: deployment.id
-  }).then(data => {
+  // const deploymentDetails = (deployment) => await octokit.rest.repos.listDeploymentStatuses({
+  //   ...context.repo,
+  //   deployment_id: deployment.id
+  // }).then(data => {
 
-    let statuses = data.data
-    return statuses.map( status => {
-      return status.state
+  //   let statuses = data.data
+  //   return statuses.map( status => {
+  //     return status.state
+  //   })
+  // })
+
+  function deploymentDetails(deployment) {
+    return octokit.rest.repos.listDeploymentStatuses({
+      ...context.repo,
+      deployment_id: deployment.id
+    }).then(data => {
+  
+      let statuses = data.data
+      return statuses.map( status => {
+        return status.state
+      })
     })
-  })
+  }
 
   // const deploymentDetails = ( deployment ) => await octokit.rest.repos.listDeploymentStatuses({
   //   ...context.repo,
