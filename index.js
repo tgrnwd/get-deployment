@@ -58,7 +58,7 @@ async function deploymentDetailsX(deployment) {
       
     })
 
-    console.log(await Promise.all(status);)
+    console.log(await Promise.all(status))
   
     // const time = (new Date()).toTimeString();
     // core.setOutput("time", time);
