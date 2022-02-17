@@ -10,25 +10,27 @@ This action gets details about the specified environment's current active deploy
 
 ## Outputs
 
-## `deploymentID`
+### `deploymentID`
 
 ID of deployment
 
-## `sha`
+### `sha`
 
 SHA of deployed code
 
-## `status`
+### `status`
 
 Status(es) of deployment
 
-## `ref`
+### `ref`
 
 git ref of deployment
 
-## Example usage
+### Example usage
 
+```yml
 uses: tgrnwd/get-deployment@v0.1
 with:
   token: ${{ secrets.GITHUB_TOKEN  }}
   environment: dev
+```
