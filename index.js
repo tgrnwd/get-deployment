@@ -32,7 +32,7 @@ async function deploymentStatuses(deployment, page = 1) {
 }
 
 function testStatus(statuses) {
-  return ( statuses.includes('success') && !statuses.includes('inactive') )
+  return ( statuses.status.includes('success') && !statuses.status.includes('inactive') )
 }
 
 async function findRequestedDeployment(deploymentsPage = 1) {
@@ -58,7 +58,7 @@ async function findRequestedDeployment(deploymentsPage = 1) {
       // successful condition is found
       console.log("condition met")
 
-      deployment["foundStatus"] = statuses.status
+      deployment["foundStatus"] = statuses
       
       getNextDeploymentsPage = false
 
