@@ -27,8 +27,8 @@ jobs:
         environment: dev
         token: ${{ secrets.GITHUB_TOKEN  }}
 
-    - run: echo ${{ jobs.test.outputs.time }}
-    - run: echo ${{ jobs.test.outputs.ref }}
+    - run: echo ${{ steps.outputs.time }}
+    - run: echo ${{ steps.outputs.ref }}
 
     - uses: ./
       with:
