@@ -29,13 +29,11 @@ async function deploymentStatuses(deployment, page = 1) {
 }
 
 function testStatus(statuses) {
-  console.log(statuses);
   return ( statuses.status.includes('success') && !statuses.status.includes('inactive') )
 }
 
 async function findRequestedDeployment(deploymentsPage = 1) {
   let deployments = await getDeployments(deploymentsPage)
-  let getNextDeploymentsPage = true
 
   if ( ! deployments.length ) return "No Deployments Found"
 
@@ -52,19 +50,11 @@ async function findRequestedDeployment(deploymentsPage = 1) {
     })
 
     if ( testStatus( await statuses ) ) {
-
-      // successful condition is found
-      deployment["foundStatus"] = await statuses
-      getNextDeploymentsPage = false
-
-      return deployment;
-      break;
+      return await statuses;
     }
   }
 
-  if (getNextDeploymentsPage) {
-    findRequestedDeployment(deploymentsPage++)
-  }
+  findRequestedDeployment(deploymentsPage++)
 }
 
 (async () => {
@@ -74,10 +64,11 @@ async function findRequestedDeployment(deploymentsPage = 1) {
     let foundDeployment = await findRequestedDeployment()
     console.log(await foundDeployment)
 
-    const time = (new Date()).toTimeString();
-    core.setOutput("time", time);
-    core.setOutput("ref", await foundDeployment.foundStatus);
-  
+    core.setOutput("deploymentID", await foundDeployment.deploymentID);
+    core.setOutput("ref", await foundDeployment.ref);
+    core.setOutput("status", await foundDeployment.status);
+    core.setOutput("sha", await foundDeployment.sha);
+
     // const payload = JSON.stringify(github.context.payload, undefined, 2)
     // console.log(`The event payload: ${payload}`);
   } catch (error) {
