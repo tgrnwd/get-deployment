@@ -27,6 +27,9 @@ jobs:
         environment: dev
         token: ${{ secrets.GITHUB_TOKEN  }}
 
+    - run: echo ${{ test.outputs.time }}
+    - run: echo ${{ test.outputs.ref }}
+
     - uses: ./
       with:
         environment: prod
