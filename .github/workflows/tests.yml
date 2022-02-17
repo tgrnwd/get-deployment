@@ -28,8 +28,8 @@ jobs:
         environment: dev
         token: ${{ secrets.GITHUB_TOKEN  }}
 
-    - run: echo ${{ steps.dev-test.outputs.time }}
-    - run: echo ${{ steps.dev-test.outputs.ref }}
+    - run: echo "${{ steps.dev-test.outputs.time }}"
+    - run: echo "${{ steps.dev-test.outputs.ref }}"
 
     - uses: ./
       id: prod-test
@@ -37,5 +37,6 @@ jobs:
         environment: prod
         token: ${{ secrets.GITHUB_TOKEN  }}
 
-    - run: echo ${{ steps.prod-test.outputs.time }}
-    - run: echo ${{ steps.prod-test.outputs.ref }}
+    - run: echo "${{ steps.prod-test.outputs.time }}"
+    - run: echo "${{ steps.prod-test.outputs.ref }}
+"
