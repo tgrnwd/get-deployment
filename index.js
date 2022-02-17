@@ -10,7 +10,7 @@ console.log(`Getting ${environment}!`);
 
 let page = 1
 
-async function getDeployments() {
+async function getDeployments(page = 1) {
   return await octokit.rest.repos.listDeployments({
     ...context.repo,
     environment: environment,
@@ -20,35 +20,63 @@ async function getDeployments() {
   })
 }
 
-async function deploymentStatuses(deployment) {
+async function deploymentStatuses(deployment, page = 1) {
   return await octokit.rest.repos.listDeploymentStatuses({
     ...context.repo,
-    deployment_id: deployment.id
+    deployment_id: deployment.id,
+    page: page
   }).then( response => {
     let statuses = response.data
     return statuses.map(status => status.state)
   })
 }
 
+function testStatus(statuses) {
+  return ( statuses.includes('success') && !statuses.includes('inactive') )
+}
+
+async function findRequestedDeployment(deploymentsPage = 1) {
+  let deployments = await getDeployments(deploymentsPage)
+  let getNextDeploymentsPage = true
+
+  for (const deployment of deployments) {
+    let statuses = deploymentStatuses(deployment).then(deploymentStatus => {
+      
+      return {
+        'deploymentID': deployment.id,
+        'status': deploymentStatus,
+        'ref': deployment.ref,
+        'sha': deployment.sha
+      }
+    })
+
+    if ( testStatus( await Promise.all(statuses) ) ) {
+      // successful condition is found
+      console.log("condition met")
+
+      deployment["foundStatus"] = statuses
+      
+      getNextDeploymentsPage = false
+
+      return deployment;
+      
+      break;
+    }
+  }
+
+  if (getNextDeploymentsPage) {
+    findRequestedDeployment(deploymentsPage++)
+  }
+}
+
 (async () => {
   try {
 
-    let deployments = await getDeployments()
+    let foundDeployment = await findRequestedDeployment()
+    console.log(await foundDeployment)
 
-    let status = await deployments.map(deployment => {
-      return deploymentStatuses(deployment).then(deploymentStatus => {
-        return {
-          // 'id': deployment.id,
-          'statusfrommap': deploymentStatus,
-          'reffromMap': deployment.ref,
-          ...deployment
-        }
-      })
-    })
-
-    
     // console.log(await getDeploymentsX())
-    console.log(await Promise.all(status))
+    // console.log(await Promise.all(status))
   
     // const time = (new Date()).toTimeString();
     // core.setOutput("time", time);
