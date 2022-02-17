@@ -51,7 +51,7 @@ async function deploymentDetailsX(deployment) {
       return deploymentDetailsX(deployment).then(deploymentStatus => {
         return {
           // 'id': deployment.id,
-          'statusfrommap': deployment,
+          'statusfrommap': deploymentStatus,
           'reffromMap': deployment.ref,
           ...deployment
         }
