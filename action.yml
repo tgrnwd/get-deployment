@@ -1,17 +1,23 @@
 name: 'Get Deployment'
 description: 'Get deployment details from an environment'
 inputs:
+  token:  # id of input
+    description: 'Github Token'
+    required: true
+    default: ""
   environment:  # id of input
     description: 'Name of Environment to get Deployment'
     required: true
     default: ""
-  params:  # id of input
-    description: 'Parameters of Deployment in the specified environment'
-    required: true
-    default: "latest active" # success fail inactive
 outputs:
+  deploymentID:
+    description: ID of deployment
+  sha:
+    description: SHA of deployed code
+  status:
+    description: Status(es) of deployment
   ref: # id of output
-    description: 'Ref of deployment'
+    description: git ref of deployment
 runs:
   using: 'node16'
   main: 'index.js'

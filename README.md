@@ -1,32 +1,34 @@
-# get-deployment
-
 # Get Deployment - GitHub Action
 
-This action gets details about the specified environment's deployment
+This action gets details about the specified environment's current active deployment via the GitHub API.
 
 ## Inputs
 
-## `environment`
+### `environment`
 
 **Required** The name of the environment. Default `""`.
 
-## `params`
-
-**Required** Parameters of Deployment in the specified environment. Default `"latest active"`. Also available, `"success fail inactive"`
-
 ## Outputs
 
-## `time`
+## `deploymentID`
 
-The time the action ran.
+ID of deployment
+
+## `sha`
+
+SHA of deployed code
+
+## `status`
+
+Status(es) of deployment
 
 ## `ref`
 
-Ref of deployment.
-
+git ref of deployment
 
 ## Example usage
 
 uses: tgrnwd/get-deployment@v0.1
 with:
-  environment: 'dev'
+  token: ${{ secrets.GITHUB_TOKEN  }}
+  environment: dev

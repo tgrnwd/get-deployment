@@ -9,11 +9,11 @@ on:
 
 jobs:
   # unit tests
-  units:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
+  # units:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - run: npm ci
   #   - run: npm test
 
   # test action works running from the graph
@@ -23,9 +23,24 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci
     - uses: ./
+      id: dev-test
       with:
         environment: dev
+        token: ${{ secrets.GITHUB_TOKEN  }}
+
+    - name: echo time
+      run: echo "${{ steps.dev-test.outputs.time }}"
+
+    - name: echo ref
+      run: echo "${{ steps.dev-test.outputs.ref }}"
 
     - uses: ./
+      id: prod-test
       with:
         environment: prod
+        token: ${{ secrets.GITHUB_TOKEN  }}
+
+    - name: echo time
+      run: echo "${{ steps.prod-test.outputs.time }}"
+    - name: echo ref
+      run: echo "${{ steps.prod-test.outputs.ref }}"
