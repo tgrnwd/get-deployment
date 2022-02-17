@@ -52,24 +52,25 @@ async function findRequestedDeployment(deploymentsPage = 1) {
       }
     })
 
-    console.log(await statuses)
-    // if ( testStatus( await Promise.all(statuses) ) ) {
-    //   // successful condition is found
-    //   console.log("condition met")
+    // console.log(await statuses)
 
-    //   deployment["foundStatus"] = statuses
-      
-    //   getNextDeploymentsPage = false
+    if ( testStatus( await statuses ) ) {
+      // successful condition is found
+      console.log("condition met")
 
-    //   return deployment;
+      deployment["foundStatus"] = statuses
       
-    //   break;
-    // }
+      getNextDeploymentsPage = false
+
+      return deployment;
+      
+      break;
+    }
   }
 
-  // if (getNextDeploymentsPage) {
-  //   findRequestedDeployment(deploymentsPage++)
-  // }
+  if (getNextDeploymentsPage) {
+    findRequestedDeployment(deploymentsPage++)
+  }
 }
 
 (async () => {
