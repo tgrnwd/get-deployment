@@ -48,7 +48,7 @@ async function deploymentDetailsX(deployment) {
     // console.log(await getDeploymentsX())
 
     let status = await deployments.map(deployment => {
-      return deploymentDetailsX(deployment).then(deploymentStatus => {
+      deploymentDetailsX(deployment).then(deploymentStatus => {
         return {
           'id': deploymentStatus.id,
           'status': deploymentStatus.state,
