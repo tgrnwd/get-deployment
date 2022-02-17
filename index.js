@@ -35,7 +35,7 @@ function testStatus(statuses) {
 async function findRequestedDeployment(deploymentsPage = 1) {
   let deployments = await getDeployments(deploymentsPage)
 
-  if ( ! deployments.length ) return "No Deployments Found"
+  if ( ! deployments.length ) return false;
 
   for (const deployment of await deployments) {
 
@@ -59,15 +59,15 @@ async function findRequestedDeployment(deploymentsPage = 1) {
 
 (async () => {
   try {
-    console.log(`Getting ${environment}!`);
+    console.log(`Getting deployments from environment: ${environment}!`);
 
-    let foundDeployment = await findRequestedDeployment()
-    console.log(await foundDeployment)
+    let activeDeployment = await findRequestedDeployment()
+    console.log( activeDeployment ? activeDeployment : "No Deployments Found" )
 
-    core.setOutput("deploymentID", await foundDeployment.deploymentID);
-    core.setOutput("ref", await foundDeployment.ref);
-    core.setOutput("status", await foundDeployment.status);
-    core.setOutput("sha", await foundDeployment.sha);
+    core.setOutput("deploymentID", await activeDeployment.deploymentID);
+    core.setOutput("ref", await activeDeployment.ref);
+    core.setOutput("status", await activeDeployment.status);
+    core.setOutput("sha", await activeDeployment.sha);
 
     // const payload = JSON.stringify(github.context.payload, undefined, 2)
     // console.log(`The event payload: ${payload}`);
