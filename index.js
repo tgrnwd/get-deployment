@@ -58,7 +58,7 @@ async function findRequestedDeployment(deploymentsPage = 1) {
       // successful condition is found
       console.log("condition met")
 
-      deployment["foundStatus"] = statuses
+      deployment["foundStatus"] = statuses.status
       
       getNextDeploymentsPage = false
 
