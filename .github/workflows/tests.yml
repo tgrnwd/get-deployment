@@ -23,14 +23,19 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci
     - uses: ./
+      id: dev-test
       with:
         environment: dev
         token: ${{ secrets.GITHUB_TOKEN  }}
 
-    - run: echo ${{ steps.outputs.time }}
-    - run: echo ${{ steps.outputs.ref }}
+    - run: echo ${{ steps.dev-test.outputs.time }}
+    - run: echo ${{ steps.dev-test.outputs.ref }}
 
     - uses: ./
+      id: prod-test
       with:
         environment: prod
         token: ${{ secrets.GITHUB_TOKEN  }}
+
+    - run: echo ${{ steps.prod-test.outputs.time }}
+    - run: echo ${{ steps.prod-test.outputs.ref }}
