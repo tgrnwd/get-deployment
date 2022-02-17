@@ -39,6 +39,8 @@ async function findRequestedDeployment(deploymentsPage = 1) {
   let deployments = await getDeployments(deploymentsPage)
   let getNextDeploymentsPage = true
 
+  if ( ! deployments.length ) return "No Deployments Found"
+
   for (const deployment of await deployments) {
 
     // console.log(deployment)
@@ -58,7 +60,7 @@ async function findRequestedDeployment(deploymentsPage = 1) {
       // successful condition is found
       console.log("condition met")
 
-      deployment["foundStatus"] = statuses
+      deployment["foundStatus"] = statuses.status
       
       getNextDeploymentsPage = false
 
