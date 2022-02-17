@@ -42,28 +42,28 @@ async function findRequestedDeployment(deploymentsPage = 1) {
   for (const deployment of await deployments) {
 
     console.log(deployment)
-    // let statuses = deploymentStatuses(deployment).then(deploymentStatus => {
+    let statuses = deploymentStatuses(deployment).then(deploymentStatus => {
       
-    //   return {
-    //     'deploymentID': deployment.id,
-    //     'status': deploymentStatus,
-    //     'ref': deployment.ref,
-    //     'sha': deployment.sha
-    //   }
-    // })
+      return {
+        'deploymentID': deployment.id,
+        'status': deploymentStatus,
+        'ref': deployment.ref,
+        'sha': deployment.sha
+      }
+    })
 
-    // if ( testStatus( await Promise.all(statuses) ) ) {
-    //   // successful condition is found
-    //   console.log("condition met")
+    if ( testStatus( await Promise.all(statuses) ) ) {
+      // successful condition is found
+      console.log("condition met")
 
-    //   deployment["foundStatus"] = statuses
+      // deployment["foundStatus"] = statuses
       
-    //   getNextDeploymentsPage = false
+      // getNextDeploymentsPage = false
 
-    //   return deployment;
+      return deployment;
       
-    //   break;
-    // }
+      break;
+    }
   }
 
   if (getNextDeploymentsPage) {
