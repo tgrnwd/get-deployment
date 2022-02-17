@@ -33,10 +33,9 @@ async function deploymentStatuses(deployment) {
 (async () => {
   try {
 
-    // let deployments = await getDeployments()
-    // console.log(await getDeploymentsX())
+    let deployments = await getDeployments()
 
-    let status = await getDeployments().map(deployment => {
+    let status = await deployments.map(deployment => {
       return deploymentStatuses(deployment).then(deploymentStatus => {
         return {
           // 'id': deployment.id,
@@ -45,9 +44,10 @@ async function deploymentStatuses(deployment) {
           ...deployment
         }
       })
-      
     })
 
+    
+    // console.log(await getDeploymentsX())
     console.log(await Promise.all(status))
   
     // const time = (new Date()).toTimeString();
