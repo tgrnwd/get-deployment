@@ -48,16 +48,17 @@ async function deploymentDetailsX(deployment) {
     // console.log(await getDeploymentsX())
 
     let status = await deployments.map(deployment => {
-      let statuses = deploymentDetailsX(deployment)
-      return {
-        'id': deploymentStatus.id,
-        'status': deploymentStatus.state,
-        'ref': deployment.ref,
-        'state': statuses
-      }
+      return deploymentDetailsX(deployment).then(deploymentStatus => {
+        return {
+          'id': deploymentStatus.id,
+          'status': deploymentStatus.state,
+          'ref': deployment.ref
+        }
+      })
+      
     })
 
-    console.log(status)
+    console.log(await status)
   
     // const time = (new Date()).toTimeString();
     // core.setOutput("time", time);
