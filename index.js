@@ -59,7 +59,7 @@ async function findRequestedDeployment(deploymentsPage = 1) {
 
 (async () => {
   try {
-    console.log(`Getting deployments from environment: ${environment}!`);
+    console.log(`Getting deployments from environment: ${environment}`);
 
     let activeDeployment = await findRequestedDeployment()
     console.log( activeDeployment ? activeDeployment : "No Deployments Found" )
