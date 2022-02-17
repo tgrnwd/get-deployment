@@ -6,9 +6,6 @@ const octokit = new github.getOctokit(token)
 const context = github.context
 
 const environment = core.getInput('environment');
-console.log(`Getting ${environment}!`);
-
-let page = 1
 
 async function getDeployments(page = 1) {
   return await octokit.rest.repos.listDeployments({
@@ -32,6 +29,7 @@ async function deploymentStatuses(deployment, page = 1) {
 }
 
 function testStatus(statuses) {
+  console.log(statuses);
   return ( statuses.status.includes('success') && !statuses.status.includes('inactive') )
 }
 
@@ -43,7 +41,6 @@ async function findRequestedDeployment(deploymentsPage = 1) {
 
   for (const deployment of await deployments) {
 
-    // console.log(deployment)
     let statuses = deploymentStatuses(deployment).then(deploymentStatus => {
       
       return {
@@ -54,18 +51,13 @@ async function findRequestedDeployment(deploymentsPage = 1) {
       }
     })
 
-    // console.log(await statuses)
-
     if ( testStatus( await statuses ) ) {
-      // successful condition is found
-      console.log("condition met")
 
-      deployment["foundStatus"] = statuses.status
-      
+      // successful condition is found
+      deployment["foundStatus"] = await statuses
       getNextDeploymentsPage = false
 
       return deployment;
-      
       break;
     }
   }
@@ -77,18 +69,14 @@ async function findRequestedDeployment(deploymentsPage = 1) {
 
 (async () => {
   try {
+    console.log(`Getting ${environment}!`);
 
     let foundDeployment = await findRequestedDeployment()
     console.log(await foundDeployment)
 
-    // console.log(await getDeploymentsX())
-    // console.log(await Promise.all(status))
-  
-    // const time = (new Date()).toTimeString();
-    // core.setOutput("time", time);
-    // core.setOutput("ref", deployments);
-    
-    // Get the JSON webhook payload for the event that triggered the workflow
+    const time = (new Date()).toTimeString();
+    core.setOutput("time", time);
+    core.setOutput("ref", await foundDeployment.foundStatus);
   
     // const payload = JSON.stringify(github.context.payload, undefined, 2)
     // console.log(`The event payload: ${payload}`);
