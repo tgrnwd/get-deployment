@@ -19,6 +19,9 @@ jobs:
   # test action works running from the graph
   test:
     runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.dev-test.outputs.sha }}
+      ref: ${{ steps.dev-test.outputs.ref }}
     steps:
     - uses: actions/checkout@v2
     - run: npm ci
@@ -29,7 +32,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: echo time
-      run: echo "${{ steps.dev-test.outputs.time }}"
+      run: echo "${{ steps.dev-test.outputs.sha }}"
 
     - name: echo ref
       run: echo "${{ steps.dev-test.outputs.ref }}"
@@ -41,6 +44,14 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: echo time
-      run: echo "${{ steps.prod-test.outputs.time }}"
+      run: echo "${{ steps.prod-test.outputs.sha }}"
     - name: echo ref
       run: echo "${{ steps.prod-test.outputs.ref }}"
+
+  get-outputs:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - run: |
+        echo ${{ needs.test.outputs.sha }}
+        echo ${{ needs.test.outputs.ref }}
