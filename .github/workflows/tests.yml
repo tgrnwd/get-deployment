@@ -44,3 +44,11 @@ jobs:
       run: echo "${{ steps.prod-test.outputs.time }}"
     - name: echo ref
       run: echo "${{ steps.prod-test.outputs.ref }}"
+
+  get-outputs:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - run: |
+        echo ${{ needs.test.outputs.sha }}
+        echo ${{ needs.test.steps.dev-test.outputs.sha }}
