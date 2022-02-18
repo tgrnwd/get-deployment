@@ -51,4 +51,3 @@ jobs:
     steps:
     - run: |
         echo "${{ needs.test.outputs.sha }}"
-        echo "${{ jobs.test.steps.dev-test.outputs.sha }}"
