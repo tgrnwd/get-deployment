@@ -64,10 +64,10 @@ async function findRequestedDeployment(deploymentsPage = 1) {
     let activeDeployment = await findRequestedDeployment()
     console.log( activeDeployment ? activeDeployment : "No Deployments Found" )
 
-    core.setOutput("deploymentID", activeDeployment.deploymentID);
-    core.setOutput("ref", activeDeployment.ref);
-    core.setOutput("status", activeDeployment.status);
-    core.setOutput("sha", activeDeployment.sha);
+    core.setOutput("deploymentID", await activeDeployment.deploymentID);
+    core.setOutput("ref", await activeDeployment.ref);
+    core.setOutput("status", await activeDeployment.status);
+    core.setOutput("sha", await activeDeployment.sha);
 
     // const payload = JSON.stringify(github.context.payload, undefined, 2)
     // console.log(`The event payload: ${payload}`);
