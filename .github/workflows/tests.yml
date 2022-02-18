@@ -29,7 +29,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: echo time
-      run: echo "${{ steps.dev-test.outputs.time }}"
+      run: echo "${{ steps.dev-test.outputs.sha }}"
 
     - name: echo ref
       run: echo "${{ steps.dev-test.outputs.ref }}"
@@ -41,7 +41,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: echo time
-      run: echo "${{ steps.prod-test.outputs.time }}"
+      run: echo "${{ steps.prod-test.outputs.sha }}"
     - name: echo ref
       run: echo "${{ steps.prod-test.outputs.ref }}"
 
@@ -50,5 +50,5 @@ jobs:
     needs: test
     steps:
     - run: |
-        echo ${{ needs.test.outputs.sha }}
-        echo ${{ needs.test.steps.dev-test.outputs.sha }}
+        echo "${{ needs.test.outputs.sha }}"
+        echo "${{ jobs.test.steps.dev-test.outputs.sha }}"
