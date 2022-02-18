@@ -19,6 +19,9 @@ jobs:
   # test action works running from the graph
   test:
     runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.dev-test.outputs.sha }}
+      ref: ${{ steps.dev-test.outputs.ref }}
     steps:
     - uses: actions/checkout@v2
     - run: npm ci
@@ -50,4 +53,5 @@ jobs:
     needs: test
     steps:
     - run: |
-        echo "${{ needs.test.outputs.sha }}"
+        echo ${{ needs.test.outputs.sha }}
+        echo ${{ needs.test.outputs.ref }}
